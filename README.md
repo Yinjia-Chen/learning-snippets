@@ -14,7 +14,10 @@
 ```
 regex/
   ├─ notes.md
-  └─ demo.js
+  └─ demos/
+      ├─ test.js   // 便于运行测试 demo
+      ├─ 1.xxxx.js // 存放 demo（中文名）
+      └─ ...
 ```
 
 速查表（知识点浓缩&速记）
