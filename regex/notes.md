@@ -128,6 +128,37 @@ const regex = new RegExp("abc");
 "abc123".match(/\d+/); // ["123"]
 ```
 
+### 7.6 `matchAll()`
+
+返回“所有匹配”的可迭代对象（迭代器），每个结果项与 `exec` 返回结构相同（含分组、index、input、groups）。必须给正则加上 `g` 修饰符，否则会抛出 `TypeError`。
+
+```js
+const text = "Items: A-12, B-7, A-34.";
+// 展开为数组并映射为结构化对象
+const all = [...text.matchAll(/([A-Z])-(\d+)/g)].map(m => ({
+  match: m[0],       // 整体匹配
+  letter: m[1],      // 第一个分组
+  number: Number(m[2]), // 第二个分组
+  index: m.index     // 起始索引
+}));
+/*
+[
+  { match: "A-12", letter: "A", number: 12, index: 7 },
+  { match: "B-7",  letter: "B", number: 7,  index: 13 },
+  { match: "A-34", letter: "A", number: 34, index: 18 }
+]
+*/
+
+// 或使用 for..of 惰性遍历（适合大文本）
+for (const m of "a1 b22 c333".matchAll(/([a-z])(\d+)/g)) {
+  console.log(m[1], m[2], "@", m.index);
+}
+```
+
+对比：
+- `match(/re/g)`：返回“匹配到的字符串列表”，不含分组与索引。
+- `matchAll(/re/g)`：返回迭代器，含分组与索引，需要展开或遍历使用。
+
 ### 7.3 `replace()`
 
 替换匹配到的内容。
