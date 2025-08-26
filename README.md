@@ -33,7 +33,7 @@ cheatsheet/
 ## ✅ 已整理内容
 
 * [正则表达式 (regex)](./regex/notes.md)
-* 
+* [回流重绘 (reflow-repaint)](./reflow-repaint/notes.md)
 
 ---
 
@@ -59,5 +59,5 @@ cd regex
 
 ## 📝 TODO / 计划
 
-* [ ] 正则表达式：入门学习
 * [ ] 正则表达式：demo
+* [ ] 回流重绘：demo
