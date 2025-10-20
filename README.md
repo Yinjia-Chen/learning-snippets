@@ -28,12 +28,13 @@ cheatsheet/
   └─ 
 ```
 
-------
+---
 
 ## ✅ 已整理内容
 
-* [正则表达式 (regex)](./regex/notes.md)
-* [回流重绘 (reflow-repaint)](./reflow-repaint/notes.md)
+* [正则表达式 (regex)](./regex/notes.md "ctrl + click =&gt; notes.md")
+* [回流重绘 (reflow-repaint)](./reflow-repaint/notes.md "ctrl + click =&gt; notes.md")
+* [for循环 (for-loop)](./for-loop/notes.md "ctrl + click =&gt; notes.md")
 
 ---
 
@@ -61,3 +62,5 @@ cd regex
 
 * [ ] 正则表达式：demo
 * [ ] 回流重绘：demo
+* [ ] 前端hook（composable）：notes + demo
+* [ ] 前端性能优化：notes + demo
