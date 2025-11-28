@@ -22,6 +22,10 @@
 
 > 官方文档：[JSON Schema - Type-specific Keywords](https://json-schema.org/understanding-json-schema/reference/type#type-specific-keywords)
 
+- anyOf / oneOf / allOf 控制 子 schema
+  - anyOf：至少满足其中一个子 schema
+  - oneOf：必须且仅满足一个子 schema
+  - allOf：必须同时满足所有子 schema
 - $schema: 本 schema 遵循的草案，用以决定关键字的有效性和解析规则，例如："https://json-schema.org/draft/2020-12/schema"
 - $id: 指定的全局标识符 / 基准 URI，可以是 http 等网络地址，也可以是本地相对/绝对路径，在当前 schema 跨服务/文件使用时用到
 - title: 标题名
@@ -36,10 +40,6 @@
 - format: 常见格式（"email", "date-time", "uri"等，依赖校验器）（校验时要安装 ajv-formats 依赖）
 - minimum/maximum、minLength/maxLength、minItems/maxItems
 - examples: 合格的实例
-- anyOf / oneOf / allOf 控制 子 schema
-  - anyOf：至少满足其中一个子 schema
-  - oneOf：必须且仅满足一个子 schema
-  - allOf：必须同时满足所有子 schema
 
 
 ### 最小示例
