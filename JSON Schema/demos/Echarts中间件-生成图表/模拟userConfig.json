@@ -1,0 +1,17 @@
+{
+  "chartType": "line",
+  "dataConfig": {
+    "xField": "date",
+    "yFields": ["net_value","cumulative_return"],
+    "filter": {
+      "timeFilter": { "startTime": "2025-01-01T00:00:00Z", "endTime": "2025-12-31T23:59:59Z" },
+      "industryFilter": ["科技"],
+      "productFilter": ["PROD_001"]
+    }
+  },
+  "echartsConfig": {
+    "lineConfig": { "smooth": true, "showSymbol": true, "lineWidth": 2 },
+    "styleConfig": { "colors": ["#1890ff","#2fc25b"], "legendShow": true, "legendPosition": "top" }
+  },
+  "businessConfig": { "template": "net_value_trend", "showTotal": true, "exportType": ["png"], "permission": "research_chart" }
+}

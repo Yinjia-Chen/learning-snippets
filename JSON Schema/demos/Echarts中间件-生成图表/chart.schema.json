@@ -1,0 +1,256 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "投研图表配置Schema",
+  "description": "约束投研场景图表配置的结构和规则，适配悬浮组件生成图表需求",
+  "properties": {
+    "chartType": {
+      "type": "string",
+      "title": "图表类型",
+      "enum": ["line", "bar", "pie", "radar", "waterfall", "treemap", "scatter", "heatmap"],
+      "enumNames": ["折线图", "柱状图", "饼图", "雷达图", "瀑布图", "矩形树图", "散点图", "热力图"],
+      "default": "line"
+    },
+    "echartsConfig": {
+      "type": "object",
+      "title": "图表配置",
+      "description": "ECharts可视化样式/类型配置",
+      "properties": {
+        
+        "treemapConfig": {
+          "type": "object",
+          "title": "矩形树图配置",
+          "properties": {
+            "visibleMin": { "type": "number", "default": 10 },
+            "breadcrumb": { "type": "boolean", "default": true }
+          },
+          "default": {}
+        },
+        "scatterConfig": {
+          "type": "object",
+          "title": "散点图配置",
+          "properties": {
+            "symbolSize": { "type": "number", "minimum": 1, "maximum": 50, "default": 6 },
+            "regression": { "type": "boolean", "default": false }
+          },
+          "default": {}
+        },
+        "heatmapConfig": {
+          "type": "object",
+          "title": "热力图配置",
+          "properties": {
+            "gradient": { "type": "array", "items": { "type": "string", "format": "color" }, "default": ["#ffffb2","#fecc5c","#fd8d3c","#f03b20","#bd0026"] },
+            "minValue": { "type": "number" },
+            "maxValue": { "type": "number" }
+          },
+          "default": {}
+        },
+        "lineConfig": {
+          "type": "object",
+          "title": "折线图配置",
+          "properties": {
+            "smooth": { "type": "boolean", "default": true },
+            "showSymbol": { "type": "boolean", "default": true },
+            "lineWidth": { "type": "number", "minimum": 1, "maximum": 5, "default": 2 }
+          },
+          "default": {}
+        },
+        "barConfig": {
+          "type": "object",
+          "title": "柱状图配置",
+          "properties": {
+            "barWidth": { "type": "number", "minimum": 10, "maximum": 50, "default": 20 },
+            "stack": { "type": "boolean", "default": false }
+          },
+          "default": {}
+        },
+        "pieConfig": {
+          "type": "object",
+          "title": "饼图配置",
+          "properties": {
+            "radius": { "type": "array", "items": { "type": "number" }, "default": [0,70] },
+            "showLabel": { "type": "boolean", "default": true }
+          },
+          "default": {}
+        },
+        "radarConfig": {
+          "type": "object",
+          "title": "雷达图配置",
+          "properties": {
+            "indicatorMax": { "type": "number", "default": 100 },
+            "shape": { "type": "string", "enum": ["polygon","circle"], "default": "polygon" }
+          },
+          "default": {}
+        },
+        "waterfallConfig": {
+          "type": "object",
+          "title": "瀑布图配置",
+          "properties": {
+            "barWidth": { "type": "number", "default": 25 },
+            "showSumLabel": { "type": "boolean", "default": true },
+            "sumField": { "type": "string", "default": "cumulative_return" }
+          },
+          "default": {}
+        },
+        "styleConfig": {
+          "type": "object",
+          "title": "通用样式配置",
+          "properties": {
+            "colors": { "type": "array", "items": { "type": "string", "format": "color" }, "default": ["#1890ff","#2fc25b","#facc15","#ff4d4f","#722ed1"] },
+            "legendShow": { "type": "boolean", "default": true },
+            "legendPosition": { "type": "string", "enum": ["top","bottom","left","right"], "default": "top" },
+            "grid": {
+              "type": "object",
+              "properties": {
+                "top": { "type": "number", "default": 60 },
+                "bottom": { "type": "number", "default": 40 },
+                "left": { "type": "number", "default": 60 },
+                "right": { "type": "number", "default": 20 }
+              },
+              "default": {}
+            }
+          },
+          "default": {}
+        }
+      }
+    },
+    "businessConfig": {
+      "type": "object",
+      "title": "业务规则配置",
+      "properties": {
+        "template": {
+          "type": "string",
+          "enum": ["net_value_trend","drawdown_analysis","factor_exposure","position_distribution","return_attribution"],
+          "default": "net_value_trend"
+        },
+        "showTotal": { "type": "boolean", "default": true },
+        "exportType": { "type": "array", "items": { "type": "string", "enum": ["png","pdf","svg"] }, "default": ["png"] },
+        "permission": { "type": "string", "default": "research_chart" }
+      },
+      "default": {}
+    }
+  },
+  "definitions": {
+    "node": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "value": { "type": "number" },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/node" }
+        }
+      },
+      "required": ["name","value"]
+    }
+  },
+
+  "required": ["chartType", "echartsConfig", "businessConfig"],
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "title": "Treemap 变体（矩形树图）",
+      "properties": {
+        "chartType": { "const": "treemap" },
+        "dataConfig": {
+          "type": "object",
+          "title": "数据配置（Treemap）",
+          "properties": {
+            "nameField": { "type": "string", "default": "name" },
+            "valueField": { "type": "string", "default": "value" },
+            "nodes": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/node" },
+              "default": []
+            },
+            "filter": { "type": "object" }
+          },
+          "required": ["nameField","valueField"]
+        }
+      },
+      "required": ["dataConfig","echartsConfig"]
+    },
+    {
+      "title": "Pie 变体（饼图）",
+      "properties": {
+        "chartType": { "const": "pie" },
+        "dataConfig": {
+          "type": "object",
+          "title": "数据配置（Pie）",
+          "properties": {
+            "nameField": { "type": "string", "default": "name" },
+            "valueField": { "type": "string", "default": "value" },
+            "filter": { "type": "object" }
+          },
+          "required": ["nameField","valueField"]
+        }
+      },
+      "required": ["dataConfig","echartsConfig"]
+    },
+    {
+      "title": "Scatter 变体（散点图）",
+      "properties": {
+        "chartType": { "const": "scatter" },
+        "dataConfig": {
+          "type": "object",
+          "title": "数据配置（Scatter）",
+          "properties": {
+            "xField": { "type": "string", "enum": ["date","industry","product_code","risk_level","scale"], "default": "date" },
+            "yFields": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "type": "string" } },
+            "filter": { "type": "object" }
+          },
+          "required": ["xField","yFields"]
+        }
+      },
+      "required": ["dataConfig","echartsConfig"]
+    },
+    {
+      "title": "Heatmap 变体（热力图）",
+      "properties": {
+        "chartType": { "const": "heatmap" },
+        "dataConfig": {
+          "type": "object",
+          "title": "数据配置（Heatmap）",
+          "properties": {
+            "xField": { "type": "string", "enum": ["date","industry","product_code","risk_level","scale"], "default": "date" },
+            "yFields": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "type": "string" } },
+            "valueField": { "type": "string", "default": "value" },
+            "filter": { "type": "object" }
+          },
+          "required": ["xField","yFields","valueField"]
+        }
+      },
+      "required": ["dataConfig","echartsConfig"]
+    },
+    {
+      "title": "Axis 变体（折线/柱状/雷达/瀑布等轴图）",
+      "properties": {
+        "chartType": { "enum": ["line","bar","radar","waterfall"] },
+        "dataConfig": {
+          "type": "object",
+          "title": "数据配置（Axis）",
+          "properties": {
+            "xField": { "type": "string", "enum": ["date","industry","product_code","risk_level","scale"], "default": "date" },
+            "yFields": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "enum": ["net_value","cumulative_return","max_drawdown","sharp_ratio","risk_score"] },
+              "default": ["net_value"]
+            },
+            "filter": { "type": "object" }
+          },
+          "required": ["xField","yFields"]
+        }
+      },
+      "required": ["dataConfig","echartsConfig"]
+    }
+  ],
+  "errorMessage": {
+    "additionalProperties": "不允许添加Schema未定义的字段",
+    "required": {
+      "chartType": "必须选择图表类型",
+      "dataConfig": "必须包含数据配置",
+      "echartsConfig": "必须包含图表配置"
+    }
+  }
+}
