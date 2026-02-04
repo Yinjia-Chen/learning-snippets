@@ -38,6 +38,7 @@ cheatsheet/
 * [JSON Schema (JSON Schema)](./JSON%20Schema/notes.md "ctrl + click =&gt; notes.md")
 * [装饰器 (decorator)](./decorator/notes.md "ctrl + click =&gt; notes.md")
 * [WebWorker + ServiceWorker (Worker)](./workers/notes.md "ctrl + click =&gt; notes.md")
+* [TypeScript](./TypeScript/notes.md "ctrl + click =&gt; notes.md")
 
 ---
 
